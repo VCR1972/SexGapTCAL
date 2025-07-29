@@ -4,3 +4,4 @@ The file "01_TCAL_COD_decomposition.R" performs our main calculation and visuali
 The folder "Causes" contains cleaned cause-of-death data from WHO mortality database. 
 The folder "external" contains the life tables from Human mortality database (mortality.org). 
 The folder "Functions" contains the functions that helps visualising our results in the main text. 
+The Index.html presents all the sex gap TCAL comparisons for all countries and the causes of death used in the study.
