@@ -6,43 +6,125 @@
   <style>
     body { font-family: sans-serif; padding: 20px; max-width: 900px; margin: auto; }
     iframe { width: 100%; height: 800px; border: 1px solid #ccc; margin-top: 20px; }
-    select { font-size: 1rem; padding: 5px; }
+    select { font-size: 1rem; padding: 6px; margin-right: 10px; }
   </style>
 </head>
 <body>
-  <h2>Select a Country to Compare the Sex Gap in TCAL</h2>
-  <select onchange="loadPDF(this.value)">
-    <option value="">-- Choose --</option>
-    
-<option value="https://drive.google.com/file/d/1-WQw8HVUpMSgSArjf4WRYorpxOOhxzyD/preview">Australia</option>
-<option value="https://drive.google.com/file/d/1B74gblmZdRjH5DrqJJ9NX8ELz66yOnXb/preview">Austria</option>
-<option value="https://drive.google.com/file/d/1umio0ABdmv8zVoeCiL1zBjn2GCWmesiM/preview">Belgium</option>
-<option value="https://drive.google.com/file/d/1VCkD7KpsOYoA-NizMYOFBw7iS6Hkb-Qu/preview">Canada</option>
-<option value="https://drive.google.com/file/d/1yrT5M-fxI1UObzVysfkVKx_IaEpdBrGU/preview">Denmark</option>
-<option value="https://drive.google.com/file/d/1rTxYSjfuN_RkGCfr21EsdcWyjs6vqa72/preview">Finland</option>
-<option value="https://drive.google.com/file/d/1-e57Ael4t97lYnIdfl2YyZ3fRk7gOWGE/preview">France</option>
-<option value="https://drive.google.com/file/d/1Au0YO9g5Iv4Yvb1dh1kuVpaCvW82EcVi/preview">Hungary</option>
-<option value="https://drive.google.com/file/d/1r1B4BPHNPKEdepxPg-mbPrvcH0rbUyf4/preview">Ireland</option>
-<option value="https://drive.google.com/file/d/1V-P4RY58dJosseVXQ36PyzUkbpXCGR5t/preview">Italy</option>
-<option value="https://drive.google.com/file/d/1Akwcil0yC-UPA9GdGuju-84m-_WopupQ/preview">Japan</option>
-<option value="https://drive.google.com/file/d/1X072mzdBjd8SLc1B9wb7B4Fk3lLbllvo/preview">The Netherlands</option>
-<option value="https://drive.google.com/file/d/1kUfPJP6oel2DXsb8sR-ZCwUcGcLTjlTa/preview">New Zealand</option>
-<option value="https://drive.google.com/file/d/1q2OHZ62cxmLbk7ZV-5DdB3XeUtC_3NST/preview">Norway</option>
-<option value="https://drive.google.com/file/d/180bu5Nzjx_O0dAp_FXBzBBiDNUEU6MGD/preview">Portugal</option>
-<option value="https://drive.google.com/file/d/1ju9tUhk1fRF1DarSmR_vmLAt_lkGY0LV/preview">Spain</option>
-<option value="https://drive.google.com/file/d/1b65Q7el0yu02Psm7BWY9lVODLk_ofZgJ/preview">Sweden</option>
-<option value="https://drive.google.com/file/d/1VrdzkP7GTg4i0nUxwiW44oEV9fN1sqIY/preview">Switzerland</option>
-<option value="https://drive.google.com/file/d/13yLXdZqeJzTI3-LjFfi5rgRpFxL-189r/preview">UK</option>
-<option value="https://drive.google.com/file/d/1J1ZIU0hrAtcJdW-sAKJiLgwnbRkK4Iwg/preview">USA</option>
-    
-  </select>
 
-  <iframe id="pdfFrame" src=""></iframe>
+<h2>Select Year and Country</h2>
 
-  <script>
-    function loadPDF(url) {
-      document.getElementById("pdfFrame").src = url;
-    }
-  </script>
+<select id="yearSelect" onchange="updatePDF()">
+  <option value="">-- Year --</option>
+  <option value="TCAL(1955,2020)">TCAL(1955,2020)</option>
+  <option value="TCAL(1965,2020)">TCAL(1965,2020)</option>
+  <option value="TCAL(1975,2020)">TCAL(1975,2020)</option>
+</select>
+
+<select id="countrySelect" onchange="updatePDF()">
+<option value="">-- Country --</option>
+<option value="Australia">Australia</option>
+<option value="Austria">Austria</option>
+<option value="Belgium">Belgium</option>
+<option value="Canada">Canada</option>
+<option value="Denmark">Denmark</option>
+<option value="Finland">Finland</option>
+<option value="France">France</option>
+<option value="Hungary">Hungary</option>
+<option value="Ireland">Ireland</option>
+<option value="Italy">Italy</option>
+<option value="Japan">Japan</option>
+<option value="The Netherlands">The Netherlands</option>
+<option value="New Zealand">New Zealand</option>
+<option value="Norway">Norway</option>
+<option value="Portugal">Portugal</option>
+<option value="Spain">Spain</option>
+<option value="Sweden">Sweden</option>
+<option value="Switzerland">Switzerland</option>
+<option value="UK">UK</option>
+<option value="USA">USA</option>
+</select>
+
+<iframe id="pdfFrame"></iframe>
+
+<script>
+const pdfs = {
+  "TCAL(1955,2020)": {
+"Australia": "https://drive.google.com/file/d/1-WQw8HVUpMSgSArjf4WRYorpxOOhxzyD/preview",   
+"Austria": "https://drive.google.com/file/d/1B74gblmZdRjH5DrqJJ9NX8ELz66yOnXb/preview",   
+"Belgium": "https://drive.google.com/file/d/1umio0ABdmv8zVoeCiL1zBjn2GCWmesiM/preview",   
+"Canada": "https://drive.google.com/file/d/1VCkD7KpsOYoA-NizMYOFBw7iS6Hkb-Qu/preview",   
+"Denmark": "https://drive.google.com/file/d/1yrT5M-fxI1UObzVysfkVKx_IaEpdBrGU/preview",   
+"Finland": "https://drive.google.com/file/d/1rTxYSjfuN_RkGCfr21EsdcWyjs6vqa72/preview",   
+"France": "https://drive.google.com/file/d/1-e57Ael4t97lYnIdfl2YyZ3fRk7gOWGE/preview",   
+"Hungary": "https://drive.google.com/file/d/1Au0YO9g5Iv4Yvb1dh1kuVpaCvW82EcVi/preview",   
+"Ireland": "https://drive.google.com/file/d/1r1B4BPHNPKEdepxPg-mbPrvcH0rbUyf4/preview",   
+"Italy": "https://drive.google.com/file/d/1V-P4RY58dJosseVXQ36PyzUkbpXCGR5t/preview",   
+"Japan": "https://drive.google.com/file/d/1Akwcil0yC-UPA9GdGuju-84m-_WopupQ/preview",   
+"The Netherlands": "https://drive.google.com/file/d/1X072mzdBjd8SLc1B9wb7B4Fk3lLbllvo/preview",   
+"New Zealand": "https://drive.google.com/file/d/1kUfPJP6oel2DXsb8sR-ZCwUcGcLTjlTa/preview",   
+"Norway": "https://drive.google.com/file/d/1q2OHZ62cxmLbk7ZV-5DdB3XeUtC_3NST/preview",   
+"Portugal": "https://drive.google.com/file/d/180bu5Nzjx_O0dAp_FXBzBBiDNUEU6MGD/preview",   
+"Spain": "https://drive.google.com/file/d/1ju9tUhk1fRF1DarSmR_vmLAt_lkGY0LV/preview",   
+"Sweden": "https://drive.google.com/file/d/1b65Q7el0yu02Psm7BWY9lVODLk_ofZgJ/preview",   
+"Switzerland": "https://drive.google.com/file/d/1VrdzkP7GTg4i0nUxwiW44oEV9fN1sqIY/preview",   
+"UK": "https://drive.google.com/file/d/13yLXdZqeJzTI3-LjFfi5rgRpFxL-189r/preview",   
+"USA": "https://drive.google.com/file/d/1J1ZIU0hrAtcJdW-sAKJiLgwnbRkK4Iwg/preview"
+  },
+  "TCAL(1965,2020)": {
+"Australia": "https://drive.google.com/file/d/1omV29cS3Hh4z-hA7UCFKXVJFylxmpM7n/preview", 
+"Austria": "https://drive.google.com/file/d/1l-VMs1iynsNT-blHYrIQ-Tfv9y-eREsh/preview", 
+"Belgium": "https://drive.google.com/file/d/1clitTCnyWg15oddOVYp2BTR440Vgk6Cv/preview",  
+"Canada": "https://drive.google.com/file/d/1ezD-AbkiinwqAE8Lo5i5vSFuV9Jh_eAe/preview",  
+"Denmark": "https://drive.google.com/file/d/1BHDdt4p6Z3-g3zzim_ccFe44Qr4M_o7G/preview",  
+"Finland": "https://drive.google.com/file/d/1fd3riWnflIsYXsaNpMYCe-BlNDhRoOcU/preview",  
+"France": "https://drive.google.com/file/d/1GoEBN_ugwFwxq-a9EcNLn6JPyzECY8mS/preview ",  
+"Hungary": "https://drive.google.com/file/d/1U4d5g6cZIRu9jhL30P7pu3sU8SVgvhul/preview",  
+"Ireland": "https://drive.google.com/file/d/19whrJ2E1T3aDSdqCSo_kepq-SkL27KUG/preview",  
+"Italy": "https://drive.google.com/file/d/1676AB4N9737k-X1EYq3PI-AUM4-44Mff/preview",  
+"Japan": "https://drive.google.com/file/d/19KNpTI0JBaiWNmiVJJ_Kbw3ES_mBNa01/preview",  
+"The Netherlands": "https://drive.google.com/file/d/1g2dwswgCfUv5XZnB4nkt6Vo2h6zOF-vT/preview",  
+"New Zealand": "https://drive.google.com/file/d/11tmOYQy9omfsPvaaseheAg8_bnNCRtPy/preview",  
+"Norway": "https://drive.google.com/file/d/1pMssdNEm151VzVLpvvh8CvllqOg2GkeD/preview",  
+"Portugal": "https://drive.google.com/file/d/1uQUOUUyEYNvxlTZ0pcGR-luv5aM4UYQT/preview",  
+"Spain": "https://drive.google.com/file/d/1bx6shppaRl4otfj6s_9K_AX1mvQfR2B4/preview",  
+"Sweden": "https://drive.google.com/file/d/1_-v4tnEwtR-09fjGtRrZF04eUGADZc2k/preview",  
+"Switzerland": "https://drive.google.com/file/d/1Bq0dHPKnJdKwFuldkRnztGScinIXVcR3/preview",  
+"UK": "https://drive.google.com/file/d/1XBJoJOTEVmy_HBlSybmWw78-MnqqU8I9/preview",  
+"USA": "https://drive.google.com/file/d/1_e6m0sGEoGLX1b8y8Afs-deoXPoRUlFH/preview" 
+  },
+  "TCAL(1975,2020)": {
+"Australia": "https://drive.google.com/file/d/1yU2-gAT6mb1Mk5G6Oa2KTYkmC75D5xD8/preview", 
+"Austria": "https://drive.google.com/file/d/1psC0MTtvdijoRFkjhB8yv8t3gucWF9eh/preview", 
+"Belgium": "https://drive.google.com/file/d/1D0ZPZM0y7jwMIkLokNDfE14gfWT529Uw/preview",  
+"Canada": "https://drive.google.com/file/d/1jlGWI2jJ5Y04leg0UTxdKAw16pCnwa8h/preview",  
+"Denmark": "https://drive.google.com/file/d/1GeRMkcz6NjtdhPZkWcmC9TZXVWKhYYrw/preview",  
+"Finland": "https://drive.google.com/file/d/1HXVxellazj5zEfHMtYT6fLlIwqXpzuWQ/preview",  
+"France": "https://drive.google.com/file/d/1mMxVECqBXKNLkKPt0uPUyvp4ziiio63i/preview",  
+"Hungary": "https://drive.google.com/file/d/16UJ-__6eSRRg97du5c6gbwUWHb9xptfW/preview",  
+"Ireland": "https://drive.google.com/file/d/1-ldToJqTMGgM8r3X-iE8clZrbfSBk-VD/preview",  
+"Italy": "https://drive.google.com/file/d/1cXRDEXTbZP-o7IccaVJpY1dXsSA7EMdE/preview",  
+"Japan": "https://drive.google.com/file/d/1ZPPIqNlwSBcb3s0AKseRlLpLGlzafp2D/preview",  
+"The Netherlands": "https://drive.google.com/file/d/1ps9MNONWE-sToIt_um91zgrkxSpafbn2/preview",  
+"New Zealand": "https://drive.google.com/file/d/1xRGe9iYHvD6uaXOqkICsA9BHCzOP_I_v/preview",  
+"Norway": "https://drive.google.com/file/d/1a2wLuZ89Av1XbPU--1xFVuh5mKda5CnH/preview",  
+"Portugal": "https://drive.google.com/file/d/1aZN_rQzBywc0qJ5QZx47mw_qCev_8OIN/preview",  
+"Spain": "https://drive.google.com/file/d/1bKt0uMG6Goh44-xSxGbR4knWly5wDji6/preview",  
+"Sweden": "https://drive.google.com/file/d/1W630JNte3IFQiYs6XBMTdqGK0iMYzQrh/preview",  
+"Switzerland": "https://drive.google.com/file/d/18G-YC5jsCxMPfOpLsoOeGRraGf4suVEI/preview",  
+"UK": "https://drive.google.com/file/d/1kgEyYBHEdzQvYe_ehzF9hIwr_OBd499h/preview",  
+"USA": "https://drive.google.com/file/d/1ww29s_6SkW92mJBltmioN5KK_8fXKgmi/preview" 
+  }
+};
+
+function updatePDF() {
+  const year = document.getElementById("yearSelect").value;
+  const country = document.getElementById("countrySelect").value;
+
+  if (year && country && pdfs[year] && pdfs[year][country]) {
+    document.getElementById("pdfFrame").src = pdfs[year][country];
+  }
+}
+</script>
+
 </body>
 </html>
